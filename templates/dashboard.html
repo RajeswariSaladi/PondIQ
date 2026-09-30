@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>PondIQ - Smart Aquaculture Monitoring</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef6f7;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .header {
+            background: #0b3d4a;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+        }
+
+        .pond-info {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #0b3d4a;
+        }
+
+        /* AI STATUS */
+
+        .ai-status {
+            margin-top: 25px;
+            background: #f3e8ff;
+            border-left: 6px solid #7b2cbf;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .ai-status h2 {
+            margin-top: 0;
+            color: #5a189a;
+        }
+
+        .ai-status p {
+            margin-bottom: 0;
+        }
+
+        /* RISK */
+
+        .risk {
+            margin-top: 20px;
+            background: #fff3cd;
+            border-left: 6px solid #e0a800;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .risk h2 {
+            margin-top: 0;
+            color: #8a6200;
+        }
+
+        /* ALERT */
+
+        .alert {
+            margin-top: 20px;
+            background: #ffe5e5;
+            border-left: 6px solid #d63031;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .alert h2 {
+            margin-top: 0;
+            color: #b71c1c;
+        }
+
+        .alert h3 {
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .alert li {
+            margin-bottom: 8px;
+        }
+
+        /* RECOMMENDATION */
+
+        .recommendation {
+            margin-top: 20px;
+            background: #e4f5e9;
+            border-left: 6px solid #2e7d32;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .recommendation h2 {
+            margin-top: 0;
+            color: #256b2a;
+        }
+
+        /* CHART */
+
+        .chart-card {
+            margin-top: 25px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>🌊 PondIQ</h1>
+
+        <p>
+            AI-Powered Smart Aquaculture Monitoring &
+            Farm Decision Assistant
+        </p>
+
+    </div>
+
+
+    <!-- POND INFORMATION -->
+
+    <div class="pond-info">
+
+        <strong>Pond:</strong> Pond 03
+
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+
+        <strong>Species:</strong> Vannamei Shrimp
+
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+
+        <strong>Monitoring:</strong> Simulated IoT Data
+
+    </div>
+
+
+    <!-- SENSOR CARDS -->
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <h3>🌡️ Temperature</h3>
+
+            <div class="value">
+                {{ temperature }} °C
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🧪 pH</h3>
+
+            <div class="value">
+                {{ ph }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>💧 Dissolved Oxygen</h3>
+
+            <div class="value">
+                {{ dissolved_oxygen }} mg/L
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🌫️ Turbidity</h3>
+
+            <div class="value">
+                {{ turbidity }} NTU
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⚗️ Ammonia</h3>
+
+            <div class="value">
+                {{ ammonia }} mg/L
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⚙️ Aerator</h3>
+
+            <div class="value">
+                {{ aerator }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- AI ANOMALY STATUS -->
+
+    <div class="ai-status">
+
+        <h2>🤖 AI Anomaly Detection</h2>
+
+        <h3>
+            {{ anomaly_status }}
+        </h3>
+
+        <p>
+            {{ anomaly_message }}
+        </p>
+
+        <p>
+            <strong>Model:</strong>
+            Isolation Forest
+        </p>
+
+    </div>
+
+
+    <!-- POND RISK -->
+
+    <div class="risk">
+
+        <h2>
+            ⚠️ Pond Risk: {{ risk }}
+        </h2>
+
+        <p>
+            PondIQ combines multiple water-quality signals
+            and operating conditions to identify potential
+            pond-stress risk.
+        </p>
+
+    </div>
+
+
+    <!-- EARLY WARNING -->
+
+    <div class="alert">
+
+        <h2>
+            🚨 Early Warning Alert
+        </h2>
+
+
+        <h3>
+            What changed?
+        </h3>
+
+
+        <ul>
+
+            {% for change in changes %}
+
+                <li>
+                    {{ change }}
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+
+        <h3>
+            🤖 AI Explanation
+        </h3>
+
+
+        <p>
+            {{ ai_explanation }}
+        </p>
+
+    </div>
+
+
+    <!-- RECOMMENDATION -->
+
+    <div class="recommendation">
+
+        <h2>
+            💡 Recommended Action
+        </h2>
+
+        <p>
+            {{ recommendation }}
+        </p>
+
+    </div>
+
+
+    <!-- TREND GRAPH -->
+
+    <div class="card chart-card">
+
+        <h2>
+            📊 Pond Water-Quality Trends
+        </h2>
+
+        <canvas id="waterChart"></canvas>
+
+    </div>
+
+
+    <!-- CHART SCRIPT -->
+
+    <script>
+
+        const ctx =
+            document.getElementById('waterChart');
+
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            data: {
+
+                labels:
+                    {{ timestamps | tojson }},
+
+                datasets: [
+
+                    {
+
+                        label:
+                            'Temperature (°C)',
+
+                        data:
+                            {{ temperatures | tojson }},
+
+                        tension: 0.3
+
+                    },
+
+
+                    {
+
+                        label:
+                            'Dissolved Oxygen (mg/L)',
+
+                        data:
+                            {{ oxygen_values | tojson }},
+
+                        tension: 0.3
+
+                    },
+
+
+                    {
+
+                        label:
+                            'Ammonia (mg/L)',
+
+                        data:
+                            {{ ammonia_values | tojson }},
+
+                        tension: 0.3
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+
+                        display: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+</html>
